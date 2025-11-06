@@ -21,3 +21,11 @@ dependencies { // TODO: добавьте нужные зависимости
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+tasks.withType(JavaExec) {
+    systemProperties = [
+            'file.encoding'   : 'UTF-8',
+            'sun.jnu.encoding': 'UTF-8'
+    ]
+    jvmArgs = ['-Dfile.encoding=UTF-8', '-Dsun.jnu.encoding=UTF-8']
+}
