@@ -1,10 +1,7 @@
 package com.skillbox.repository;
 
 import com.skillbox.exception.ParseLineFormatException;
-import com.skillbox.model.Transaction;
-import com.skillbox.model.TransactionForeignCurrency;
-import com.skillbox.model.TransactionRegular;
-import com.skillbox.model.TransactionTaxable;
+import com.skillbox.model.*;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -27,38 +24,66 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         try {
             List<String> lines = Files.readAllLines(Path.of(fileName));
             for (String line : lines) {
-                String[] split = line.split(",");
-                int accountId = Integer.parseInt(split[0]);
-                int transactionId = Integer.parseInt(split[1]);
-                LocalDateTime date = LocalDateTime.parse(split[2]);
-                String category = split[3];
-                BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(split[4]));
-                String type = split[5];
-                if (split.length == 6) {
-                    Transaction transaction = new TransactionRegular(accountId, transactionId, date, category, amount, REGULAR);
-                    transactions.add(transaction);
-                } else if (split.length == 7) {
-                    if (type.equals(TAXABLE.getType())) {
-                        BigDecimal tax = BigDecimal.valueOf(Double.parseDouble(split[6]));
-                        TransactionTaxable transaction = new TransactionTaxable(
-                                accountId, transactionId, date, category, amount, TAXABLE, tax);
-                        transaction.setAmount(transaction.calculateTax());
-                        transactions.add(transaction);
-                    } else if (type.equals(FOREIGN_CURRENT.getType())) {
-                        BigDecimal course = BigDecimal.valueOf(Double.parseDouble(split[6]));
-                        TransactionForeignCurrency transaction = new TransactionForeignCurrency(
-                                accountId, transactionId, date, category, amount, FOREIGN_CURRENT, course);
-                        BigDecimal resultAfterConvert = transaction.convertToBaseCurrency(course);
-                        transaction.setAmount(resultAfterConvert);
-                        transactions.add(transaction);
-                    }
+                String[] values = splitLine(line);
+                TransactionType type = TransactionType.of(values[5]);
+                switch (type) {
+                    case REGULAR -> transactions.add(createTransactionRegular(values));
+                    case TAXABLE -> transactions.add(createTransactionTaxable(values));
+                    case FOREIGN_CURRENT -> transactions.add(createTransactionForeignCurrency(values));
+
                 }
             }
-        } catch (ParseLineFormatException e) {
+        } catch (
+                ParseLineFormatException e) {
             System.out.println("Не корректная строка -   несоответствие количества аргументов");
-        } catch (IOException e) {
+        } catch (
+                IOException e) {
             System.out.println("Файл не найден " + e.getMessage());
         }
         return transactions;
+    }
+
+    private static TransactionRegular createTransactionRegular(String[] values) {
+        return new TransactionRegular(
+                Integer.parseInt(values[0]),
+                Integer.parseInt(values[1]),
+                LocalDateTime.parse(values[2]),
+                values[3],
+                BigDecimal.valueOf(Double.parseDouble(values[4])),
+                TransactionType.of(values[5])
+        );
+    }
+
+    private static TransactionTaxable createTransactionTaxable(String[] values) {
+        TransactionTaxable transaction = new TransactionTaxable(
+                Integer.parseInt(values[0]),
+                Integer.parseInt(values[1]),
+                LocalDateTime.parse(values[2]),
+                values[3],
+                BigDecimal.valueOf(Double.parseDouble(values[4])),
+                TransactionType.of(values[5]),
+                BigDecimal.valueOf(Double.parseDouble(values[6]))
+        );
+        transaction.setAmount(transaction.calculateTax());
+        return transaction;
+    }
+
+    private static TransactionForeignCurrency createTransactionForeignCurrency(String[] values) {
+        BigDecimal course = BigDecimal.valueOf(Double.parseDouble(values[6]));
+        TransactionForeignCurrency transaction = new TransactionForeignCurrency(
+                Integer.parseInt(values[0]),
+                Integer.parseInt(values[1]),
+                LocalDateTime.parse(values[2]),
+                values[3],
+                BigDecimal.valueOf(Double.parseDouble(values[4])),
+                TransactionType.of(values[5]),
+                BigDecimal.valueOf(Double.parseDouble(values[6]))
+        );
+        transaction.setAmount(transaction.convertToBaseCurrency(course));
+        return transaction;
+    }
+
+    private static String[] splitLine(String line) {
+        return line.split(",");
     }
 }
