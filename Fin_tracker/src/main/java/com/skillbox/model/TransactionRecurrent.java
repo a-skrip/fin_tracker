@@ -54,7 +54,20 @@ public class TransactionRecurrent extends Transaction implements Recurring {
 
     @Override
     public LocalDateTime getPreviousOccurrence(LocalDateTime dateTime) {
-        return null;
+        LocalDateTime result = this.getDate();
+        int repeat = this.repeat;
+
+        if (result.isAfter(dateTime)) {
+            throw new UncorrectedDataTimeException("Переданная дата позже начала повторения транзакции!");
+        }
+        for (int i = 1; i < repeat; i++) {
+            LocalDateTime next = result.plus(this.pattern.getDuration());
+            if (next.isAfter(dateTime)) {
+                return result;
+            }
+            result = next;
+        }
+        return result;
     }
 
     @Override

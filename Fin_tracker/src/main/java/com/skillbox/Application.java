@@ -36,8 +36,9 @@ public class Application {
         TransactionRepository transactionReader = new TransactionRepositoryImpl(transactionFilename);
         List<Transaction> transactions = transactionReader.readAll();
         transactions.forEach(System.out::println);
-        TransactionRecurrent tran = (TransactionRecurrent) transactions.get(4);
+        TransactionRecurrent tran = (TransactionRecurrent) transactions.get(3);
         System.out.println(tran.getNextOccurrence(LocalDateTime.now()));
+        System.out.println(tran.getPreviousOccurrence(LocalDateTime.now()));
 
 
         TransactionService transactionService = null;
