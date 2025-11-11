@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.skillbox.model.TransactionType.*;
@@ -30,7 +31,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                     case REGULAR -> transactions.add(createTransactionRegular(values));
                     case TAXABLE -> transactions.add(createTransactionTaxable(values));
                     case FOREIGN_CURRENT -> transactions.add(createTransactionForeignCurrency(values));
-
+                    case COMMENTABLE -> transactions.add(createTransactionCommentable(values));
                 }
             }
         } catch (
@@ -80,6 +81,19 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                 BigDecimal.valueOf(Double.parseDouble(values[6]))
         );
         transaction.setAmount(transaction.convertToBaseCurrency(course));
+        return transaction;
+    }
+    private  static TransactionCommentable createTransactionCommentable(String[] values) {
+        List<String> comments = Arrays.stream(values[6].split(";"))
+                .toList();
+        TransactionCommentable transaction = new TransactionCommentable(
+                Integer.parseInt(values[0]),
+                Integer.parseInt(values[1]),
+                LocalDateTime.parse(values[2]),
+                values[3],
+                BigDecimal.valueOf(Double.parseDouble(values[4])),
+                TransactionType.of(values[5]));
+        transaction.setComments(comments);
         return transaction;
     }
 
