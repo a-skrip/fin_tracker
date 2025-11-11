@@ -4,10 +4,12 @@ package com.skillbox;
 import com.skillbox.controller.MainMenuController;
 import com.skillbox.model.Account;
 import com.skillbox.model.Transaction;
+import com.skillbox.model.TransactionRecurrent;
 import com.skillbox.repository.*;
 import com.skillbox.exception.NumberParametersException;
 import com.skillbox.service.TransactionService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -29,11 +31,14 @@ public class Application {
         // TODO: исправьте инициализацию сервисов
         AccountRepository accountReader = new AccountRepositoryImpl(accountFilename);
         List<Account> accounts = accountReader.readAll();
-        accounts.forEach(System.out::println);
+//        accounts.forEach(System.out::println);
 
         TransactionRepository transactionReader = new TransactionRepositoryImpl(transactionFilename);
         List<Transaction> transactions = transactionReader.readAll();
         transactions.forEach(System.out::println);
+        TransactionRecurrent tran = (TransactionRecurrent) transactions.get(4);
+        System.out.println(tran.getNextOccurrence(LocalDateTime.now()));
+
 
         TransactionService transactionService = null;
         AnalyticRepository saver = null;

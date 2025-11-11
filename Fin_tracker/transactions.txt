@@ -1,7 +1,8 @@
 10001,2,2020-01-01T12:00:00,Food,-25.50,Regular,
 10001,4,2020-01-15T08:30:00,Transport,-15.00,Regular,
 10001,6,2020-03-22T19:00:00,Entertainment,-45.00,ForeignCurrency,85
-10001,50,2020-03-22T19:00:00,MobilePay,-100.00,Recurrent,hourly;3
+10001,50,2020-03-22T19:00:00,MobilePay,-100.00,Recurrent,yearly;7
+10001,24,2025-11-11T12:00:00,Pay,-10.00,Recurrent,hourly;25
 10001,21,2020-03-22T19:00:00,Dividends,500.00,Commentable,comment1;comment2;comment3;
 10002,8,2020-04-15T14:15:00,Salary,5000.00,Taxable,0.20
 10002,10,2021-05-10T11:00:00,Salary,100.00,Taxable,0.10
