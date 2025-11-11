@@ -60,7 +60,7 @@ public class TransactionRecurrent extends Transaction implements Recurring {
         if (result.isAfter(dateTime)) {
             throw new UncorrectedDataTimeException("Переданная дата позже начала повторения транзакции!");
         }
-        for (int i = 1; i < repeat; i++) {
+        for (int i = 0; i < repeat; i++) {
             LocalDateTime next = result.plus(this.pattern.getDuration());
             if (next.isAfter(dateTime)) {
                 return result;
