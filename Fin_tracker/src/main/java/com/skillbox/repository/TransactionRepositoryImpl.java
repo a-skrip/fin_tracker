@@ -32,6 +32,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                     case TAXABLE -> transactions.add(createTransactionTaxable(values));
                     case FOREIGN_CURRENT -> transactions.add(createTransactionForeignCurrency(values));
                     case COMMENTABLE -> transactions.add(createTransactionCommentable(values));
+                    case RECURRENT -> transactions.add(createTransactionRecurrent(values));
                 }
             }
         } catch (
@@ -83,7 +84,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         transaction.setAmount(transaction.convertToBaseCurrency(course));
         return transaction;
     }
-    private  static TransactionCommentable createTransactionCommentable(String[] values) {
+
+    private static TransactionCommentable createTransactionCommentable(String[] values) {
         List<String> comments = Arrays.stream(values[6].split(";"))
                 .toList();
         TransactionCommentable transaction = new TransactionCommentable(
@@ -95,6 +97,23 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                 TransactionType.of(values[5]));
         transaction.setComments(comments);
         return transaction;
+    }
+
+    private static TransactionRecurrent createTransactionRecurrent(String[] values) {
+        String[] fields = values[6].split(";");
+        RecurrencePattern pattern = RecurrencePattern.of(fields[0]);
+        int duration = Integer.parseInt(fields[1]);
+
+        return new TransactionRecurrent(
+                Integer.parseInt(values[0]),
+                Integer.parseInt(values[1]),
+                LocalDateTime.parse(values[2]),
+                values[3],
+                BigDecimal.valueOf(Double.parseDouble(values[4])),
+                TransactionType.of(values[5]),
+                pattern,
+                duration
+        );
     }
 
     private static String[] splitLine(String line) {
