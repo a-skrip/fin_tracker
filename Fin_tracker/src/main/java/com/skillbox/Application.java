@@ -2,15 +2,14 @@ package com.skillbox;
 
 
 import com.skillbox.controller.MainMenuController;
-import com.skillbox.data.model.Account;
-import com.skillbox.data.repository.AccountRepository;
-import com.skillbox.data.repository.AccountRepositoryImpl;
-import com.skillbox.data.repository.AnalyticRepository;
-import com.skillbox.data.repository.TransactionRepository;
+import com.skillbox.model.Account;
+import com.skillbox.model.Transaction;
+import com.skillbox.repository.*;
 import com.skillbox.exception.NumberParametersException;
 import com.skillbox.service.TransactionService;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Application {
 
@@ -30,9 +29,12 @@ public class Application {
         // TODO: исправьте инициализацию сервисов
         AccountRepository accountReader = new AccountRepositoryImpl(accountFilename);
         List<Account> accounts = accountReader.readAll();
-        accounts.forEach(System.out::println);
+//        accounts.forEach(System.out::println);
 
-        TransactionRepository transactionReader = null;
+        TransactionRepository transactionReader = new TransactionRepositoryImpl(transactionFilename);
+        List<Transaction> transactions = transactionReader.readAll();
+//        transactions.forEach(System.out::println);
+
         TransactionService transactionService = null;
         AnalyticRepository saver = null;
         new MainMenuController(transactionService, saver).start();

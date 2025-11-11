@@ -1,4 +1,4 @@
-package com.skillbox.data.model;
+package com.skillbox.model;
 
 import java.util.List;
 

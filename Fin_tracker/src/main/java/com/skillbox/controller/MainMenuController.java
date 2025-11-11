@@ -4,8 +4,8 @@ import com.skillbox.controller.dto.TransactionFilterDto;
 import com.skillbox.controller.option.AggregateOption;
 import com.skillbox.controller.option.GroupOption;
 import com.skillbox.controller.option.MainMenuOption;
-import com.skillbox.data.model.Analytic;
-import com.skillbox.data.repository.AnalyticRepository;
+import com.skillbox.model.Analytic;
+import com.skillbox.repository.AnalyticRepository;
 import com.skillbox.service.TransactionService;
 
 /**

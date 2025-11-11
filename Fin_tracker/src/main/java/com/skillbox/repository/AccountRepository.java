@@ -1,6 +1,6 @@
-package com.skillbox.data.repository;
+package com.skillbox.repository;
 
-import com.skillbox.data.model.Account;
+import com.skillbox.model.Account;
 import java.util.List;
 
 /**

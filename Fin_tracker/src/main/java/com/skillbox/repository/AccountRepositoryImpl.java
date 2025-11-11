@@ -1,7 +1,7 @@
-package com.skillbox.data.repository;
+package com.skillbox.repository;
 
-import com.skillbox.data.model.Account;
-import com.skillbox.data.model.AccountType;
+import com.skillbox.model.Account;
+import com.skillbox.model.AccountType;
 import com.skillbox.exception.ParseLineFormatException;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.skillbox.data.model;
+package com.skillbox.model;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -20,7 +20,9 @@ public enum RecurrencePattern {
     private final String pattern;
     private final Duration duration;
 
-    private static final Map<String, RecurrencePattern> MAP = Arrays.stream(RecurrencePattern.values()).collect(Collectors.toMap(RecurrencePattern::getPattern, Function.identity()));
+    private static final Map<String, RecurrencePattern> MAP = Arrays.stream(RecurrencePattern.values())
+            .collect(Collectors.toMap(RecurrencePattern::getPattern, Function.identity()));
+
     RecurrencePattern(String pattern, Duration duration) {
         this.pattern = pattern;
         this.duration = duration;

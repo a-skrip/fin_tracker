@@ -1,4 +1,4 @@
-package com.skillbox.data.model;
+package com.skillbox.model;
 
 /**
  * Интерфейс для получения информации о счете.

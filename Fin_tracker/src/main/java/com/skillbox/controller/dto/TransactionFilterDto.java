@@ -1,7 +1,7 @@
 package com.skillbox.controller.dto;
 
-import com.skillbox.data.model.Recurring;
-import com.skillbox.data.model.Transaction;
+import com.skillbox.model.Recurring;
+import com.skillbox.model.Transaction;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.function.Predicate;

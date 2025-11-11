@@ -3,7 +3,7 @@ package com.skillbox.service;
 import com.skillbox.controller.option.AggregateOption;
 import com.skillbox.controller.option.GroupOption;
 import com.skillbox.controller.dto.TransactionFilterDto;
-import com.skillbox.data.model.Analytic;
+import com.skillbox.model.Analytic;
 
 /**
  * Интерфейс для обработки транзакций и расчета аналитических данных.
