@@ -39,7 +39,7 @@ public class Application {
         TransactionRecurrent tran = (TransactionRecurrent) transactions.get(3);
         System.out.println(tran.getNextOccurrence(LocalDateTime.now()));
         System.out.println(tran.getPreviousOccurrence(LocalDateTime.now()));
-
+        System.out.println(tran.getTransactionAmount(LocalDateTime.now()));
 
         TransactionService transactionService = null;
         AnalyticRepository saver = null;

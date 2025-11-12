@@ -72,7 +72,16 @@ public class TransactionRecurrent extends Transaction implements Recurring {
 
     @Override
     public BigDecimal getTransactionAmount(LocalDateTime dateTime) {
-        return null;
+        BigDecimal startAmount = this.getAmount();
+        LocalDateTime start = this.getDate();
+        BigDecimal result = startAmount;
+        for (int i = 0; i < this.repeat; i++) {
+            LocalDateTime next = start.plus(this.pattern.getDuration());
+            if (next.isBefore(dateTime)) {
+                result = result.add(startAmount);
+            }
+        }
+        return result;
     }
 
     @Override
