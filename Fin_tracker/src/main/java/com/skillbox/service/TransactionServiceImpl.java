@@ -8,6 +8,7 @@ import com.skillbox.model.Transaction;
 import com.skillbox.data.repository.TransactionRepository;
 import com.skillbox.model.TransactionType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TransactionServiceImpl implements TransactionService {
@@ -27,8 +28,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<String> list = allTransaction.stream()
                 .filter(transactionFilter.buildPredicate())
-                .map(Transaction::getType)
-                .map(TransactionType::getType)
+                .map(transaction -> transaction.getDate().toString())
                 .toList();
 
         Analytic analytic = new Analytic();
