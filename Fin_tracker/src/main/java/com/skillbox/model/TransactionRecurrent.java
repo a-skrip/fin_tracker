@@ -10,6 +10,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAmount;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,6 +20,7 @@ public class TransactionRecurrent extends Transaction implements Recurring {
 
     private RecurrencePattern pattern;
     private int repeat;
+    private final List<LocalDateTime> datesTransaction = new ArrayList<>();
 
     public TransactionRecurrent(int accountId,
                                 int transactionId,
@@ -86,6 +89,24 @@ public class TransactionRecurrent extends Transaction implements Recurring {
 
     @Override
     public boolean isExecutedBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return false;
+        boolean isExecute = false;
+        createDatesList();
+        for (LocalDateTime dateTime : datesTransaction) {
+            if (dateTime.isAfter(startDate) && dateTime.isBefore(endDate)) {
+                isExecute = true;
+                break;
+            }
+        }
+        datesTransaction.forEach(System.out::println);
+        return isExecute;
     }
+
+    private void createDatesList() {
+        LocalDateTime start = this.getDate();
+        for (int i = 0; i <= this.repeat; i++) {
+            datesTransaction.add(start);
+            start = start.plus(this.pattern.getDuration());
+        }
+    }
+
 }

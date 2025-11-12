@@ -35,11 +35,12 @@ public class Application {
 
         TransactionRepository transactionReader = new TransactionRepositoryImpl(transactionFilename);
         List<Transaction> transactions = transactionReader.readAll();
-        transactions.forEach(System.out::println);
-        TransactionRecurrent tran = (TransactionRecurrent) transactions.get(3);
-        System.out.println(tran.getNextOccurrence(LocalDateTime.now()));
-        System.out.println(tran.getPreviousOccurrence(LocalDateTime.now()));
-        System.out.println(tran.getTransactionAmount(LocalDateTime.now()));
+//        transactions.forEach(System.out::println);
+        TransactionRecurrent tran = (TransactionRecurrent) transactions.get(4);
+//        System.out.println(tran.getNextOccurrence(LocalDateTime.now()));
+//        System.out.println(tran.getPreviousOccurrence(LocalDateTime.now()));
+//        System.out.println(tran.getTransactionAmount(LocalDateTime.now()));
+        System.out.println(tran.isExecutedBetween(LocalDateTime.now().minusMinutes(33),LocalDateTime.now()));
 
         TransactionService transactionService = null;
         AnalyticRepository saver = null;
