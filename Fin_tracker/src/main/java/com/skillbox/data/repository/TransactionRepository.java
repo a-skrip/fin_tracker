@@ -1,4 +1,4 @@
-package com.skillbox.repository;
+package com.skillbox.data.repository;
 
 import com.skillbox.model.Transaction;
 import java.util.List;
@@ -14,4 +14,6 @@ public interface TransactionRepository {
      * @return Список транзакций
      */
     List<Transaction> readAll();
+
+    List<Transaction> getAllTransaction();
 }

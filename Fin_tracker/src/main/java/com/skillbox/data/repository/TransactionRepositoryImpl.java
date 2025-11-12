@@ -1,8 +1,10 @@
-package com.skillbox.repository;
+package com.skillbox.data.repository;
 
 import com.skillbox.exception.ParseLineFormatException;
 import com.skillbox.model.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -13,12 +15,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.skillbox.model.TransactionType.*;
-
 @RequiredArgsConstructor
+
 public class TransactionRepositoryImpl implements TransactionRepository {
     private final List<Transaction> transactions = new ArrayList<>();
     private final String fileName;
+
 
     @Override
     public List<Transaction> readAll() {
@@ -114,6 +116,10 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                 pattern,
                 duration
         );
+    }
+
+    public List<Transaction> getAllTransaction() {
+        return this.transactions;
     }
 
     private static String[] splitLine(String line) {

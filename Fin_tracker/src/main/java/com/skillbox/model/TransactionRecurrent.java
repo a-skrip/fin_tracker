@@ -97,7 +97,6 @@ public class TransactionRecurrent extends Transaction implements Recurring {
                 break;
             }
         }
-        datesTransaction.forEach(System.out::println);
         return isExecute;
     }
 

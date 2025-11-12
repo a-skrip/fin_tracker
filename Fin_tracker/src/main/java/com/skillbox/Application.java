@@ -4,14 +4,12 @@ package com.skillbox;
 import com.skillbox.controller.MainMenuController;
 import com.skillbox.model.Account;
 import com.skillbox.model.Transaction;
-import com.skillbox.model.TransactionRecurrent;
-import com.skillbox.repository.*;
+import com.skillbox.data.repository.*;
 import com.skillbox.exception.NumberParametersException;
 import com.skillbox.service.TransactionService;
+import com.skillbox.service.TransactionServiceImpl;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class Application {
 
@@ -36,13 +34,12 @@ public class Application {
         TransactionRepository transactionReader = new TransactionRepositoryImpl(transactionFilename);
         List<Transaction> transactions = transactionReader.readAll();
 //        transactions.forEach(System.out::println);
-        TransactionRecurrent tran = (TransactionRecurrent) transactions.get(4);
-//        System.out.println(tran.getNextOccurrence(LocalDateTime.now()));
-//        System.out.println(tran.getPreviousOccurrence(LocalDateTime.now()));
-//        System.out.println(tran.getTransactionAmount(LocalDateTime.now()));
-        System.out.println(tran.isExecutedBetween(LocalDateTime.now().minusMinutes(33),LocalDateTime.now()));
 
-        TransactionService transactionService = null;
+//
+
+
+        TransactionService transactionService = new TransactionServiceImpl(transactionReader);
+
         AnalyticRepository saver = null;
         new MainMenuController(transactionService, saver).start();
     }
