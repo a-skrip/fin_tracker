@@ -89,15 +89,16 @@ public class TransactionRecurrent extends Transaction implements Recurring {
 
     @Override
     public boolean isExecutedBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        boolean isExecute = false;
+//        boolean isExecute = false;
         createDatesList();
         for (LocalDateTime dateTime : datesTransaction) {
-            if (dateTime.isAfter(startDate) && dateTime.isBefore(endDate)) {
-                isExecute = true;
-                break;
+            boolean isAfter = startDate == null || dateTime.isAfter(startDate);
+            boolean isBefore = endDate == null || dateTime.isBefore(endDate);
+            if (isAfter && isBefore) {
+                return true;
             }
         }
-        return isExecute;
+        return false;
     }
 
     private void createDatesList() {

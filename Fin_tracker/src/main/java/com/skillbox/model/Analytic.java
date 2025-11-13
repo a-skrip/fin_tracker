@@ -11,13 +11,10 @@ import java.util.List;
  */
 // TODO: реализуйте класс для хранения аналитики
 @Setter
-
+@ToString
 public class Analytic {
-    private List<String> transactions = new ArrayList<>();
+    private List<Integer> transactions = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return transactions.toString();
-    }
+
 
 }

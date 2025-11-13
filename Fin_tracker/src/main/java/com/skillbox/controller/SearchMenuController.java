@@ -54,7 +54,6 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
         System.out.println("Ввод коммента");
         String line = scanner.next();
         filter.setCommentToken(line);
-//        filter.buildPredicate();
         return filter;
     }
 

@@ -41,7 +41,7 @@ public abstract class AbstractMenuController<E extends Enum<E> & MenuOption> {
             System.out.println(description);
             System.out.println(menu);
             System.out.print("Введите нужную опцию и нажмите Enter: ");
-
+//TODO принимает Int а не Double, что мешает при вводе нижней и верхней границе фильтра по сумме
             option = scanner.nextInt();
             if (numOptions.contains(option)) {
                 break;

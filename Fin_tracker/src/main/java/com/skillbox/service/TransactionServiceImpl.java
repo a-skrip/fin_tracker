@@ -26,9 +26,9 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<Transaction> allTransaction = repository.getAllTransaction();
 
-        List<String> list = allTransaction.stream()
+        List<Integer> list = allTransaction.stream()
                 .filter(transactionFilter.buildPredicate())
-                .map(transaction -> transaction.getDate().toString())
+                .map(Transaction::getTransactionId)
                 .toList();
 
         Analytic analytic = new Analytic();
