@@ -6,10 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +86,6 @@ public class TransactionRecurrent extends Transaction implements Recurring {
 
     @Override
     public boolean isExecutedBetween(LocalDateTime startDate, LocalDateTime endDate) {
-//        boolean isExecute = false;
         createDatesList();
         for (LocalDateTime dateTime : datesTransaction) {
             boolean isAfter = startDate == null || dateTime.isAfter(startDate);

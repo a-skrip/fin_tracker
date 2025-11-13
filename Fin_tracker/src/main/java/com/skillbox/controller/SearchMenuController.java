@@ -84,12 +84,12 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
         // TODO: добавить ввод и валидацию дат
         System.out.println("Введите дату начала: ");
         String startDate = scanner.next();
-        DateTimeFormatter ruFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         if (startDate.isEmpty()) {
             filter.setStartDate(null);
         } else {
-            LocalDate parseStartDate = LocalDate.parse(startDate, ruFormat);
+            LocalDate parseStartDate = LocalDate.parse(startDate, pattern);
             filter.setStartDate(parseStartDate);
         }
 
@@ -98,7 +98,7 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
         if (endDate.isEmpty()) {
             filter.setEndDate(null);
         } else {
-            LocalDate parseEndDate = LocalDate.parse(endDate, ruFormat);
+            LocalDate parseEndDate = LocalDate.parse(endDate, pattern);
             filter.setEndDate(parseEndDate.plusDays(1));
         }
         return filter;

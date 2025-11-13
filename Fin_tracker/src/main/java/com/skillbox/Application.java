@@ -29,14 +29,9 @@ public class Application {
         // TODO: исправьте инициализацию сервисов
         AccountRepository accountReader = new AccountRepositoryImpl(accountFilename);
         List<Account> accounts = accountReader.readAll();
-//        accounts.forEach(System.out::println);
 
         TransactionRepository transactionReader = new TransactionRepositoryImpl(transactionFilename);
         List<Transaction> transactions = transactionReader.readAll();
-//        transactions.forEach(System.out::println);
-
-//
-
 
         TransactionService transactionService = new TransactionServiceImpl(transactionReader);
 
