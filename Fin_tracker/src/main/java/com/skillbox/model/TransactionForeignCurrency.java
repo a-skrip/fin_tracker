@@ -3,6 +3,7 @@ package com.skillbox.model;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,13 +20,13 @@ public class TransactionForeignCurrency extends Transaction implements CurrencyC
                                       BigDecimal amount,
                                       TransactionType type,
                                       BigDecimal course) {
-        super(accountId, transactionId, date, category, amount, type);
+        super(accountId, transactionId, date, category, amount.setScale(2, RoundingMode.HALF_UP), type);
         this.course = course;
     }
 
     @Override
     public BigDecimal convertToBaseCurrency(BigDecimal amount) {
-        return this.getAmount().multiply(amount);
+        return this.getAmount().multiply(amount).setScale(2, RoundingMode.HALF_UP);
     }
 
 }

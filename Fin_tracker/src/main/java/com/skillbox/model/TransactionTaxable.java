@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,7 +23,7 @@ public class TransactionTaxable extends Transaction implements Taxable {
                               TransactionType type,
                               BigDecimal tax
     ) {
-        super(accountId, transactionId, date, category, amount, type);
+        super(accountId, transactionId, date, category, amount.setScale(2, RoundingMode.HALF_UP), type);
         this.tax = tax;
     }
 
@@ -30,6 +31,6 @@ public class TransactionTaxable extends Transaction implements Taxable {
     public BigDecimal calculateTax() {
         BigDecimal amount = this.getAmount();
         BigDecimal multiply = amount.multiply(this.tax);
-        return amount.subtract(multiply);
+        return amount.subtract(multiply).setScale(2, RoundingMode.HALF_UP);
     }
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class TransactionRecurrent extends Transaction implements Recurring {
                                 RecurrencePattern pattern,
                                 int repeat
     ) {
-        super(accountId, transactionId, date, category, amount, type);
+        super(accountId, transactionId, date, category, amount.setScale(2, RoundingMode.HALF_UP), type);
         this.pattern = pattern;
         this.repeat = repeat;
     }
