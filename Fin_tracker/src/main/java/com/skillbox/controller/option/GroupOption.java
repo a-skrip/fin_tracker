@@ -1,19 +1,32 @@
 package com.skillbox.controller.option;
 
+import com.skillbox.model.Transaction;
+import lombok.Getter;
+
+import java.util.function.Function;
+
+@Getter
 public enum GroupOption implements MenuOption {
     // TODO: исправьте реализацию перечисления для выбора полей группировки по образцу класса SearchOption
-    GROUP_BY_MOUNT("Группировка по месяцам"),
-    GROUP_BY_YEARS("Группировка по годам"),
-    GROUP_BY_DAYS_OF_WEEK("Группировка по дням недели"),
-    GROUP_BY_CATEGORY("Группировка по категориям"),
-    GROUP_BY_INCOME_AND_EXPENSE("Доходы/Расходы"),
-    GROUP_BY_ACCOUNT_TYPE("Группировка по типу счёта"),
-    GROUP_BY_USER_ID("Группировка по пользователю");
+    EXIT("Вернуться назад - без группировки"),
+    GROUP_BY_MOUNT("Группировка по месяцам", tr -> tr.getDate().getMonth().toString()),
+    GROUP_BY_YEARS("Группировка по годам", tr -> tr.getDate().getMonth().toString()),
+    GROUP_BY_DAYS_OF_WEEK("Группировка по дням недели", tr -> tr.getDate().getMonth().toString()),
+    GROUP_BY_CATEGORY("Группировка по категориям", tr -> tr.getDate().getMonth().toString()),
+    GROUP_BY_INCOME_AND_EXPENSE("Доходы/Расходы", tr -> tr.getDate().getMonth().toString()),
+    GROUP_BY_ACCOUNT_TYPE("Группировка по типу счёта", tr -> tr.getDate().getMonth().toString()),
+    GROUP_BY_USER_ID("Группировка по пользователю", tr -> tr.getDate().getMonth().toString());
 
     private final String name;
+    private Function<Transaction, String> groupFunction;
 
     GroupOption(String name) {
         this.name = name;
+    }
+
+    GroupOption(String name, Function<Transaction, String> function) {
+        this.name = name;
+        this.groupFunction = function;
     }
 
     public static GroupOption of(int option) {

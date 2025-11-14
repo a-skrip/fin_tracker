@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString
 public class TransactionRegular extends Transaction{
 
     public TransactionRegular(int accountId,

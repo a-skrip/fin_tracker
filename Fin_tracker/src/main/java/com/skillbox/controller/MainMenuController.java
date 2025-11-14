@@ -16,11 +16,13 @@ public class MainMenuController extends AbstractMenuController<MainMenuOption> {
     private final TransactionService transactionService;
     private final AnalyticRepository saver;
     private final SearchMenuController searchMenuController;
+    private final GroupMenuController groupMenuController;
 
-    public MainMenuController(TransactionService transactionService, AnalyticRepository saver) {
+    public MainMenuController(TransactionService transactionService, AnalyticRepository saver ) {
         super(MainMenuOption.class, "Анализ финансов");
         this.transactionService = transactionService;
         this.saver = saver;
+        this.groupMenuController = new GroupMenuController();
         this.searchMenuController = new SearchMenuController();
     }
 
@@ -41,7 +43,7 @@ public class MainMenuController extends AbstractMenuController<MainMenuOption> {
                     break;
                 case GROUP_OPTION:
                     // TODO: реализуйте класс контроллера выбора поля группировки
-                    groupOption = null;
+                    groupOption = groupMenuController.getOption();
                     break;
                 case AGGREGATION_METHOD:
                     // TODO: реализуйте класс контроллера выбора поля группировки

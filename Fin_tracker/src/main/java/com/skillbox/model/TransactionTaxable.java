@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString
 public class TransactionTaxable extends Transaction implements Taxable {
 
     private  BigDecimal tax;
