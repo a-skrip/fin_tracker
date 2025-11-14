@@ -43,7 +43,7 @@ public class MainMenuController extends AbstractMenuController<MainMenuOption> {
                     break;
                 case GROUP_OPTION:
                     // TODO: реализуйте класс контроллера выбора поля группировки
-                    groupOption = groupMenuController.getOption();
+                    groupOption = groupMenuController.selectGrouping();
                     break;
                 case AGGREGATION_METHOD:
                     // TODO: реализуйте класс контроллера выбора поля группировки
