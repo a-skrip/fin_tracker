@@ -62,7 +62,11 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
             System.out.println("Минимальное значение не установлено");
             filter.setMinAmount(null);
         } else {
-            filter.setMinAmount(BigDecimal.valueOf(Double.parseDouble(minAmount)));
+            try {
+                filter.setMinAmount(BigDecimal.valueOf(Double.parseDouble(minAmount)));
+            } catch (NumberFormatException e) {
+                System.err.println("Неправильный ввод - " + e.getMessage() + " , минимальная сумма не установлена! ");
+            }
         }
 
         System.out.println("Введите максимальную сумму:");
@@ -71,7 +75,11 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
             System.out.println("Максимальное значение не установлено");
             filter.setMaxAmount(null);
         } else {
-            filter.setMaxAmount(BigDecimal.valueOf(Integer.parseInt(maxAmount)));
+            try {
+                filter.setMaxAmount(BigDecimal.valueOf(Double.parseDouble(maxAmount)));
+            } catch (NumberFormatException e) {
+                System.err.println("Неправильный ввод - " + e.getMessage() + " максимальная сумма не установлена! ");
+            }
         }
         return filter;
     }
@@ -90,7 +98,7 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
                 filter.setStartDate(parseStartDate);
             } catch (DateTimeParseException e) {
                 System.err.println("Неверно введена дата! Дата начала не установлена");
-                startDate = null;
+                filter.setStartDate(null);
             }
         }
 
@@ -104,6 +112,7 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
                 filter.setEndDate(parseEndDate.plusDays(1));
             } catch (DateTimeParseException e) {
                 System.err.println("Неверно введена дата! Дата окончания не установлена");
+                filter.setEndDate(null);
             }
         }
         return filter;
