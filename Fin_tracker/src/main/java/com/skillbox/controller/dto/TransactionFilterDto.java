@@ -132,6 +132,5 @@ public class TransactionFilterDto {
                 .and(amountPredicate())
                 .and(commentPredicate())
                 .and(datePredicate());
-//                .and(amountPredicate());
     }
 }

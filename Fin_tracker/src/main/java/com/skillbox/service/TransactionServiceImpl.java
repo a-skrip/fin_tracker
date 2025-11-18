@@ -37,18 +37,23 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<Transaction> allTransaction = transactionRepository.getAllTransaction();
         List<Account> allAccounts = accountRepository.getAllAccounts();
+        Analytic analytic = new Analytic();
+
 
         Map<String, List<Transaction>> result = new HashMap<>();
         List<Transaction> filteredTransaction = allTransaction.stream()
                 .filter(transactionFilter.buildPredicate())
                 .toList();
 
-        if (groupOption == null) {
+        if (groupOption == null && aggregateOption == null) {
             result = filteredTransaction.stream()
                     .collect(Collectors.toMap(
                             tr -> String.valueOf(tr.getTransactionId()),
                             tr -> Collections.singletonList(tr)
                     ));
+
+            analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
+
         }
         if (groupOption != null) {
             switch (groupOption) {
@@ -58,32 +63,39 @@ public class TransactionServiceImpl implements TransactionService {
                                     tr -> String.valueOf(tr.getTransactionId()),
                                     tr -> Collections.singletonList(tr)
                             ));
+                    analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
 
                 }
                 case GROUP_BY_MOUNT -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> tr.getDate().getMonth().toString()));
+                    analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                 }
                 case GROUP_BY_YEARS -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> String.valueOf(tr.getDate().getYear())));
+                    analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                 }
                 case GROUP_BY_DAYS_OF_WEEK -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> tr.getDate().getDayOfWeek().toString()));
+                    analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                 }
                 case GROUP_BY_CATEGORY -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(Transaction::getCategory));
+                    analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                 }
                 case GROUP_BY_INCOME_AND_EXPENSE -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(
                                     tr -> tr.getAmount().compareTo(BigDecimal.ZERO) >= 0 ? "Доходы" : "Расходы"));
+                    analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                 }
                 case GROUP_BY_ACCOUNT_TYPE -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> String.valueOf(tr.getAccountId())));
+                    analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                 }
                 case GROUP_BY_USER_ID -> {
                     Map<String, List<Transaction>> tempMap = new HashMap<>();
@@ -104,21 +116,40 @@ public class TransactionServiceImpl implements TransactionService {
                         }
                     }
                     result = tempMap;
+                    analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                 }
             }
 
         }
-        Analytic analytic = new Analytic();
+
         analytic.setCalculationDate(LocalDateTime.now());
         analytic.setGroupedData(result);
-        System.out.println(transactionFilter.getCategoryToken());
-        System.out.println(transactionFilter.getCommentToken());
-        System.out.println(transactionFilter.getEndDate());
-        System.out.println(transactionFilter.getStartDate());
-        System.out.println(transactionFilter.getMinAmount());
-        System.out.println(transactionFilter.getMaxAmount());
+
         return analytic;
 
+    }
+
+    private String buildDescriptionFilter(TransactionFilterDto filterDto) {
+        StringBuilder builder = new StringBuilder();
+        if (filterDto.getStartDate() != null) {
+            builder.append(", начальная дата: ").append(filterDto.getStartDate());
+        }
+        if (filterDto.getEndDate() != null) {
+            builder.append(", конечная дата: ").append(filterDto.getEndDate());
+        }
+        if (filterDto.getMinAmount() != null) {
+            builder.append(", минимальная сумма: ").append(filterDto.getMinAmount());
+        }
+        if (filterDto.getMaxAmount() != null) {
+            builder.append(", максимальная сумма сумма: ").append(filterDto.getMaxAmount());
+        }
+        if (filterDto.getCategoryToken() != null) {
+            builder.append(", категория: ").append(filterDto.getCategoryToken());
+        }
+        if (filterDto.getCommentToken() != null) {
+            builder.append(", комментарий: ").append(filterDto.getCommentToken());
+        }
+        return builder.toString();
     }
 }
 
