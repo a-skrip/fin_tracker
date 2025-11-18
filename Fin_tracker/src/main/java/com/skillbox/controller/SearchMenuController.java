@@ -2,15 +2,11 @@ package com.skillbox.controller;
 
 import com.skillbox.controller.dto.TransactionFilterDto;
 import com.skillbox.controller.option.SearchOption;
-import com.skillbox.model.Transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.InputMismatchException;
-import java.util.function.Predicate;
+import java.time.format.DateTimeParseException;
 
 /**
  * Консольный контроллер для управления навигацией по функционалу поиска транзакций.
@@ -82,15 +78,20 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
 
     private TransactionFilterDto inputDates(TransactionFilterDto filter) {
         // TODO: добавить ввод и валидацию дат
-        System.out.println("Введите дату начала: ");
+        System.out.println("Введите дату начала (yyyy-MM-dd): ");
         String startDate = scanner.next();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         if (startDate.isEmpty()) {
             filter.setStartDate(null);
         } else {
-            LocalDate parseStartDate = LocalDate.parse(startDate, pattern);
-            filter.setStartDate(parseStartDate);
+            try {
+                LocalDate parseStartDate = LocalDate.parse(startDate, pattern);
+                filter.setStartDate(parseStartDate);
+            } catch (DateTimeParseException e) {
+                System.err.println("Неверно введена дата! Дата начала не установлена");
+                startDate = null;
+            }
         }
 
         System.out.println("Введите дату окончания: ");
@@ -98,8 +99,12 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
         if (endDate.isEmpty()) {
             filter.setEndDate(null);
         } else {
-            LocalDate parseEndDate = LocalDate.parse(endDate, pattern);
-            filter.setEndDate(parseEndDate.plusDays(1));
+            try {
+                LocalDate parseEndDate = LocalDate.parse(endDate, pattern);
+                filter.setEndDate(parseEndDate.plusDays(1));
+            } catch (DateTimeParseException e) {
+                System.err.println("Неверно введена дата! Дата окончания не установлена");
+            }
         }
         return filter;
     }

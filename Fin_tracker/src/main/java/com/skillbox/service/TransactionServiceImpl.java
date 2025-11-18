@@ -95,14 +95,11 @@ public class TransactionServiceImpl implements TransactionService {
                                 .toList();
                         if (tempMap.containsKey(userId)) {
                             List<Transaction> existTransactions = tempMap.get(userId);
-
                             List<Transaction> updateListTransaction = new ArrayList<>();
                             updateListTransaction.addAll(existTransactions);
                             updateListTransaction.addAll(filteredAccountTransaction);
                             tempMap.put(userId, updateListTransaction);
-
                         } else {
-
                             tempMap.put(String.valueOf(account.getUserId()), filteredAccountTransaction);
                         }
                     }
