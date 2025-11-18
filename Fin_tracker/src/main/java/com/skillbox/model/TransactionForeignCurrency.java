@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 public class TransactionForeignCurrency extends Transaction implements CurrencyConvertible{
 
     private  BigDecimal course;

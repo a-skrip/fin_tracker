@@ -2,6 +2,7 @@ package com.skillbox;
 
 
 import com.skillbox.controller.MainMenuController;
+import com.skillbox.controller.dto.TransactionFilterDto;
 import com.skillbox.model.Account;
 import com.skillbox.model.Transaction;
 import com.skillbox.data.repository.*;
@@ -9,7 +10,11 @@ import com.skillbox.exception.NumberParametersException;
 import com.skillbox.service.TransactionService;
 import com.skillbox.service.TransactionServiceImpl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Application {
 
@@ -33,9 +38,15 @@ public class Application {
         TransactionRepository transactionReader = new TransactionRepositoryImpl(transactionFilename);
         List<Transaction> transactions = transactionReader.readAll();
 
-        TransactionService transactionService = new TransactionServiceImpl(transactionReader);
+        accountReader.setTransaction(transactions);
+
+
+        TransactionService transactionService = new TransactionServiceImpl(transactionReader, accountReader);
 
         AnalyticRepository saver = null;
         new MainMenuController(transactionService, saver).start();
     }
+
 }
+
+

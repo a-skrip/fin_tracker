@@ -4,6 +4,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,10 +16,11 @@ import java.util.List;
 @ToString
 public class Account implements AccountInfo, BalanceOperations, AccountStatement {
 
+
     private int accountId;
     private int userId;
     private AccountType accountType;
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
     private BigDecimal balance;
 
 
@@ -36,18 +39,28 @@ public class Account implements AccountInfo, BalanceOperations, AccountStatement
         return accountType;
     }
 
+    //TODO не реализован!!!
     @Override
     public List<Transaction> getTransactions() {
-        return null;
+        return this.transactions;
     }
 
+    //TODO не реализован!!!
     @Override
     public BigDecimal getBalance() {
-        return null;
+        BigDecimal balance = BigDecimal.ZERO;
+        for (Transaction transaction : transactions) {
+            balance = balance.add(transaction.getAmount()).setScale(2, RoundingMode.HALF_UP);
+        }
+        return balance;
     }
 
+    //TODO не реализован!!!
     @Override
     public void addTransaction(Transaction transaction) {
+        if (this.accountId == transaction.getAccountId()) {
+            transactions.add(transaction);
+        }
 
     }
 }

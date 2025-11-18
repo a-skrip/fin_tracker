@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 public class TransactionRecurrent extends Transaction implements Recurring {
 
     private RecurrencePattern pattern;

@@ -1,8 +1,11 @@
 package com.skillbox.data.repository;
 
+import com.skillbox.exception.ParseLineFormatException;
 import com.skillbox.model.Account;
 import com.skillbox.model.AccountType;
-import com.skillbox.exception.ParseLineFormatException;
+import com.skillbox.model.Transaction;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,9 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Getter
+@Setter
 public class AccountRepositoryImpl implements AccountRepository {
+
     private final List<Account> accounts = new ArrayList<>();
     private final String fileName;
+
 
     public AccountRepositoryImpl(String fileName) {
         this.fileName = fileName;
@@ -43,7 +50,21 @@ public class AccountRepositoryImpl implements AccountRepository {
         } catch (IOException e) {
             System.out.println("Файл не найден " + e.getMessage());
         }
-
         return accounts;
     }
+
+    @Override
+    public List<Account> getAllAccounts() {
+        return this.accounts;
+    }
+
+    @Override
+    public void setTransaction(List<Transaction> allTransaction) {
+        for (Account account : accounts) {
+            for (Transaction transaction : allTransaction) {
+                account.addTransaction(transaction);
+            }
+        }
+    }
+
 }

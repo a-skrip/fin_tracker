@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
-public class TransactionRegular extends Transaction{
+@ToString(callSuper = true)
+public class TransactionRegular extends Transaction {
 
     public TransactionRegular(int accountId,
                               int transactionId,

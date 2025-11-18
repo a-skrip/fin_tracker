@@ -2,7 +2,6 @@ package com.skillbox.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -10,10 +9,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
+
 public class TransactionTaxable extends Transaction implements Taxable {
 
-    private  BigDecimal tax;
+    private BigDecimal tax;
 
     public TransactionTaxable(int accountId,
                               int transactionId,
@@ -32,5 +31,10 @@ public class TransactionTaxable extends Transaction implements Taxable {
         BigDecimal amount = this.getAmount();
         BigDecimal multiply = amount.multiply(this.tax);
         return amount.subtract(multiply).setScale(2, RoundingMode.HALF_UP);
+    }
+
+    @Override
+    public String toString() {
+        return "TransactionTaxable" + super.toString() + tax;
     }
 }

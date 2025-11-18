@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 public class TransactionCommentable extends Transaction implements Commentable{
 
     private List<String> comments;
