@@ -39,63 +39,75 @@ public class TransactionServiceImpl implements TransactionService {
         List<Account> allAccounts = accountRepository.getAllAccounts();
         Analytic analytic = new Analytic();
 
-
         Map<String, List<Transaction>> result = new HashMap<>();
         List<Transaction> filteredTransaction = allTransaction.stream()
                 .filter(transactionFilter.buildPredicate())
                 .toList();
 
-        if (groupOption == null && aggregateOption == null) {
+        if (groupOption == null /*&& aggregateOption == null*/) {
             result = filteredTransaction.stream()
                     .collect(Collectors.toMap(
                             tr -> String.valueOf(tr.getTransactionId()),
                             tr -> Collections.singletonList(tr)
                     ));
-
             analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
-
+//            analytic.printAnalytic(result);
         }
-        if (groupOption != null) {
+        if (groupOption != null ) {
             switch (groupOption) {
                 case EXIT -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.toMap(
                                     tr -> String.valueOf(tr.getTransactionId()),
-                                    tr -> Collections.singletonList(tr)
+                                    Collections::singletonList
                             ));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
+                    analytic.setGroupOption(groupOption.getName());
+//                    analytic.printAnalytic(result);
 
                 }
                 case GROUP_BY_MOUNT -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> tr.getDate().getMonth().toString()));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
+                    analytic.setGroupOption(groupOption.getName());
+//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_YEARS -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> String.valueOf(tr.getDate().getYear())));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
+                    analytic.setGroupOption(groupOption.getName());
+//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_DAYS_OF_WEEK -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> tr.getDate().getDayOfWeek().toString()));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
+                    analytic.setGroupOption(groupOption.getName());
+//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_CATEGORY -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(Transaction::getCategory));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
+                    analytic.setGroupOption(groupOption.getName());
+//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_INCOME_AND_EXPENSE -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(
                                     tr -> tr.getAmount().compareTo(BigDecimal.ZERO) >= 0 ? "Доходы" : "Расходы"));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
+                    analytic.setGroupOption(groupOption.getName());
+//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_ACCOUNT_TYPE -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> String.valueOf(tr.getAccountId())));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
+                    analytic.setGroupOption(groupOption.getName());
+//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_USER_ID -> {
                     Map<String, List<Transaction>> tempMap = new HashMap<>();
@@ -117,13 +129,13 @@ public class TransactionServiceImpl implements TransactionService {
                     }
                     result = tempMap;
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
+                    analytic.setGroupOption(groupOption.getName());
+//                    analytic.printAnalytic(result);
                 }
             }
-
         }
-
         analytic.setCalculationDate(LocalDateTime.now());
-        analytic.setGroupedData(result);
+        analytic.setData(result);
 
         return analytic;
 
