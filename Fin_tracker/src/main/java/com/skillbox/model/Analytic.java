@@ -1,11 +1,14 @@
 package com.skillbox.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.skillbox.controller.dto.TransactionFilterDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -76,5 +79,6 @@ public class Analytic {
         }
         return builder.toString();
     }
+
 
 }

@@ -42,7 +42,7 @@ public class TransactionServiceImpl implements TransactionService {
         Analytic analytic = new Analytic();
 
         Map<String, List<Transaction>> result = new HashMap<>();
-        Map<String, BigDecimal> aggregateResult = new HashMap<>();
+        Map<String, BigDecimal> aggregateResult;
         List<Transaction> filteredTransaction = allTransaction.stream()
                 .filter(transactionFilter.buildPredicate())
                 .toList();

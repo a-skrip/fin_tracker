@@ -40,10 +40,10 @@ public class Application {
 
         accountReader.setTransaction(transactions);
 
-
         TransactionService transactionService = new TransactionServiceImpl(transactionReader, accountReader);
 
-        AnalyticRepository saver = null;
+        AnalyticRepository saver = new AnalyticRepositoryImpl(outputFilename);
+
         new MainMenuController(transactionService, saver).start();
     }
 
