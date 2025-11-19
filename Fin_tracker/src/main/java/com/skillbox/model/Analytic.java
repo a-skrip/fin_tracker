@@ -1,5 +1,6 @@
 package com.skillbox.model;
 
+import com.skillbox.controller.dto.TransactionFilterDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -50,6 +51,28 @@ public class Analytic {
             for (Map.Entry<String, BigDecimal> entry : aggregateData.entrySet()) {
                 builder.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
             }
+        }
+        return builder.toString();
+    }
+    public static String buildDescriptionFilter(TransactionFilterDto filterDto) {
+        StringBuilder builder = new StringBuilder();
+        if (filterDto.getStartDate() != null) {
+            builder.append(", начальная дата: ").append(filterDto.getStartDate());
+        }
+        if (filterDto.getEndDate() != null) {
+            builder.append(", конечная дата: ").append(filterDto.getEndDate());
+        }
+        if (filterDto.getMinAmount() != null) {
+            builder.append(", минимальная сумма: ").append(filterDto.getMinAmount());
+        }
+        if (filterDto.getMaxAmount() != null) {
+            builder.append(", максимальная сумма: ").append(filterDto.getMaxAmount());
+        }
+        if (filterDto.getCategoryToken() != null) {
+            builder.append(", категория: ").append(filterDto.getCategoryToken());
+        }
+        if (filterDto.getCommentToken() != null) {
+            builder.append(", комментарий: ").append(filterDto.getCommentToken());
         }
         return builder.toString();
     }
