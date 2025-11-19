@@ -12,9 +12,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 @Setter
@@ -40,6 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
         Analytic analytic = new Analytic();
 
         Map<String, List<Transaction>> result = new HashMap<>();
+        Map<String, BigDecimal> aggregateResult = new HashMap<>();
         List<Transaction> filteredTransaction = allTransaction.stream()
                 .filter(transactionFilter.buildPredicate())
                 .toList();
@@ -51,9 +55,8 @@ public class TransactionServiceImpl implements TransactionService {
                             tr -> Collections.singletonList(tr)
                     ));
             analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
-//            analytic.printAnalytic(result);
         }
-        if (groupOption != null ) {
+        if (groupOption != null) {
             switch (groupOption) {
                 case EXIT -> {
                     result = filteredTransaction.stream()
@@ -63,7 +66,6 @@ public class TransactionServiceImpl implements TransactionService {
                             ));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                     analytic.setGroupOption(groupOption.getName());
-//                    analytic.printAnalytic(result);
 
                 }
                 case GROUP_BY_MOUNT -> {
@@ -71,28 +73,24 @@ public class TransactionServiceImpl implements TransactionService {
                             .collect(Collectors.groupingBy(tr -> tr.getDate().getMonth().toString()));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                     analytic.setGroupOption(groupOption.getName());
-//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_YEARS -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> String.valueOf(tr.getDate().getYear())));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                     analytic.setGroupOption(groupOption.getName());
-//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_DAYS_OF_WEEK -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> tr.getDate().getDayOfWeek().toString()));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                     analytic.setGroupOption(groupOption.getName());
-//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_CATEGORY -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(Transaction::getCategory));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                     analytic.setGroupOption(groupOption.getName());
-//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_INCOME_AND_EXPENSE -> {
                     result = filteredTransaction.stream()
@@ -100,14 +98,12 @@ public class TransactionServiceImpl implements TransactionService {
                                     tr -> tr.getAmount().compareTo(BigDecimal.ZERO) >= 0 ? "Доходы" : "Расходы"));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                     analytic.setGroupOption(groupOption.getName());
-//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_ACCOUNT_TYPE -> {
                     result = filteredTransaction.stream()
                             .collect(Collectors.groupingBy(tr -> String.valueOf(tr.getAccountId())));
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                     analytic.setGroupOption(groupOption.getName());
-//                    analytic.printAnalytic(result);
                 }
                 case GROUP_BY_USER_ID -> {
                     Map<String, List<Transaction>> tempMap = new HashMap<>();
@@ -130,7 +126,42 @@ public class TransactionServiceImpl implements TransactionService {
                     result = tempMap;
                     analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
                     analytic.setGroupOption(groupOption.getName());
-//                    analytic.printAnalytic(result);
+                }
+            }
+        }
+        if (aggregateOption != null) {
+//            List<Transaction> transactionList = result.values().stream()
+//                    .flatMap(List::stream)
+//                    .toList();
+
+
+            switch (aggregateOption) {
+                case SUM -> {
+                    for (Map.Entry<String, List<Transaction>> entry : result.entrySet()) {
+                        List<Transaction> values = entry.getValue();
+                        aggregateResult.put(entry.getKey(), calculateSum(values));
+                    }
+                    analytic.setAggregateOption(aggregateOption.getName());
+                    analytic.setAggregateData(aggregateResult);
+                }
+                case AVERAGE -> {
+
+                    for (Map.Entry<String, List<Transaction>> entry : result.entrySet()) {
+                        List<Transaction> values = entry.getValue();
+                        BigDecimal average = calculateAverage(values);
+                        aggregateResult.put(entry.getKey(), average);
+                    }
+                    analytic.setAggregateOption(aggregateOption.getName());
+                    analytic.setAggregateData(aggregateResult);
+                }
+                case COUNT -> {
+                    for (Map.Entry<String, List<Transaction>> entry : result.entrySet()) {
+                        List<Transaction> values = entry.getValue();
+                        BigDecimal count = calculateCount(values);
+                        aggregateResult.put(entry.getKey(), count);
+                    }
+                    analytic.setAggregateOption(aggregateOption.getName());
+                    analytic.setAggregateData(aggregateResult);
                 }
             }
         }
@@ -139,6 +170,27 @@ public class TransactionServiceImpl implements TransactionService {
 
         return analytic;
 
+    }
+
+    private BigDecimal calculateSum(List<Transaction> transactionList) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (Transaction transaction : transactionList) {
+            BigDecimal amount = transaction.getAmount();
+            result = result.add(amount);
+        }
+//        return transactionList.stream()
+//                .map(Transaction::getAmount)
+//                .reduce(result, BigDecimal::add);
+        return result;
+    }
+
+    private BigDecimal calculateAverage(List<Transaction> transactionList) {
+        BigDecimal sum = calculateSum(transactionList);
+        return sum.divide(BigDecimal.valueOf(transactionList.size()), MathContext.DECIMAL128);
+    }
+
+    private BigDecimal calculateCount(List<Transaction> transactionList) {
+        return BigDecimal.valueOf(transactionList.size());
     }
 
     private String buildDescriptionFilter(TransactionFilterDto filterDto) {
@@ -163,6 +215,8 @@ public class TransactionServiceImpl implements TransactionService {
         }
         return builder.toString();
     }
+
+
 }
 
 
