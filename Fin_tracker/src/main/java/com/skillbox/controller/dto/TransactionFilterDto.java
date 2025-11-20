@@ -40,7 +40,7 @@ public class TransactionFilterDto {
      */
     private Predicate<Transaction> datePredicate() {
         return transaction -> {
-            LocalDateTime date = transaction.getDate(); // TODO: здесь необходимо получить дату транзакции
+            LocalDateTime date = transaction.getDate();
             LocalDateTime start = startDate == null ? null : startDate.atStartOfDay();
             LocalDateTime end = endDate == null ? null : endDate.atStartOfDay();
             return (start == null || !date.isBefore(start)) &&
@@ -57,7 +57,6 @@ public class TransactionFilterDto {
      * @return Предикат для фильтрации транзакций по комментарию.
      */
     private Predicate<Transaction> commentPredicate() {
-        // TODO: реализуйте метод, возвращающий предикат для фильтрации транзакций по комментарию
         return transaction -> {
             if (commentToken == null || commentToken.trim().isEmpty()) {
                 return true;
@@ -83,8 +82,6 @@ public class TransactionFilterDto {
      * @return Предикат для фильтрации транзакций по диапазону суммы.
      */
     private Predicate<Transaction> amountPredicate() {
-        // TODO: реализуйте метод, возвращающий предикат для фильтрации транзакций по диапазону суммы
-
         return transaction -> {
             BigDecimal transactionAmount = transaction.getAmount();
             if (transactionAmount == null) {
@@ -112,9 +109,8 @@ public class TransactionFilterDto {
      * @return Предикат для фильтрации транзакций по категории.
      */
     private Predicate<Transaction> categoryPredicate() {
-        // TODO: реализуйте метод, возвращающий предикат для фильтрации транзакций по категории
         return transaction -> {
-            if (categoryToken == null) {
+            if (categoryToken == null || categoryToken.trim().isEmpty()) {
                 return true;
             }
             String category = transaction.getCategory();

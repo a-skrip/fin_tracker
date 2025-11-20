@@ -11,3 +11,5 @@
 10004,54,2023-04-15T14:15:00,Salary,500.00,Taxable,0.20
 10004,53,2023-03-11T14:15:00,Salary,150.00,Taxable,0.20
 10005,25,2025-11-12T09:00:00,Pay,-10.00,Recurrent,hourly;2
+10004,28,2024-08-22T19:00:00,Dividends,250.00,Commentable,java;comm;
+10005,29,2023-09-22T19:00:00,Dividends,195.00,Commentable,tea;comment;

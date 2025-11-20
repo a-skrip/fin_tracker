@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 /**
  * Абстрактный класс, представляющий собой транзакцию
  */
-// TODO: Реализуйте абстрактный класс
 @Getter
 @Setter
 

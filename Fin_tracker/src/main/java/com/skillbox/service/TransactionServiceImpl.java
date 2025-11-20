@@ -51,7 +51,7 @@ public class TransactionServiceImpl implements TransactionService {
             result = filteredTransaction.stream()
                     .collect(Collectors.toMap(
                             tr -> String.valueOf(tr.getTransactionId()),
-                            tr -> Collections.singletonList(tr)
+                            Collections::singletonList
                     ));
             analytic.setFilterDescription(buildDescriptionFilter(transactionFilter));
         }
@@ -117,19 +117,19 @@ public class TransactionServiceImpl implements TransactionService {
                 }
                 case AVERAGE -> {
                     aggregateResult = result.entrySet().stream()
-                                    .collect(Collectors.toMap(
-                                            Map.Entry::getKey,
-                                            entry -> calculateAverage(entry.getValue())
-                                    ));
+                            .collect(Collectors.toMap(
+                                    Map.Entry::getKey,
+                                    entry -> calculateAverage(entry.getValue())
+                            ));
                     analytic.setAggregateOption(aggregateOption.getName());
                     analytic.setAggregateData(aggregateResult);
                 }
                 case COUNT -> {
                     aggregateResult = result.entrySet().stream()
-                                    .collect(Collectors.toMap(
-                                            Map.Entry::getKey,
-                                            entry -> calculateCount(entry.getValue())
-                                    ));
+                            .collect(Collectors.toMap(
+                                    Map.Entry::getKey,
+                                    entry -> calculateCount(entry.getValue())
+                            ));
                     analytic.setAggregateOption(aggregateOption.getName());
                     analytic.setAggregateData(aggregateResult);
                 }
@@ -139,7 +139,6 @@ public class TransactionServiceImpl implements TransactionService {
         analytic.setData(result);
 
         return analytic;
-
     }
 
     private Map<String, List<Transaction>> mapAccountWithTransactions(List<Account> accountList,

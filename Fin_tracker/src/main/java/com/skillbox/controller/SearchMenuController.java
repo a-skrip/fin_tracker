@@ -46,15 +46,13 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
     }
 
     private TransactionFilterDto inputComment(TransactionFilterDto filter) {
-        // TODO: добавить ввод комментария
-        System.out.println("Ввод коммента");
+        System.out.println("Введите комментарий для поиска");
         String line = scanner.next();
         filter.setCommentToken(line);
         return filter;
     }
 
     private TransactionFilterDto inputAmount(TransactionFilterDto filter) {
-        // TODO: добавить ввод и валидацию минимальной и максимальной суммы транзакции
         System.out.println("Введите минимальную сумму:");
         String minAmount = scanner.next();
 
@@ -85,7 +83,6 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
     }
 
     private TransactionFilterDto inputDates(TransactionFilterDto filter) {
-        // TODO: добавить ввод и валидацию дат
         System.out.println("Введите дату начала (yyyy-MM-dd): ");
         String startDate = scanner.next();
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -119,8 +116,7 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
     }
 
     private TransactionFilterDto inputCategory(TransactionFilterDto filter) {
-        // TODO: добавить ввод категории
-        System.out.println("Ввод категории");
+        System.out.println("Введите категорию");
         String line = scanner.next();
         filter.setCategoryToken(line);
         return filter;

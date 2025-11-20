@@ -4,8 +4,8 @@ import com.skillbox.controller.dto.TransactionFilterDto;
 import com.skillbox.controller.option.AggregateOption;
 import com.skillbox.controller.option.GroupOption;
 import com.skillbox.controller.option.MainMenuOption;
-import com.skillbox.model.Analytic;
 import com.skillbox.data.repository.AnalyticRepository;
+import com.skillbox.model.Analytic;
 import com.skillbox.service.TransactionService;
 
 /**
@@ -44,11 +44,9 @@ public class MainMenuController extends AbstractMenuController<MainMenuOption> {
                     transactionFilter = searchMenuController.getTransactionFilter();
                     break;
                 case GROUP_OPTION:
-                    // TODO: реализуйте класс контроллера выбора поля группировки
                     groupOption = groupMenuController.selectGrouping();
                     break;
                 case AGGREGATION_METHOD:
-                    // TODO: реализуйте класс контроллера выбора поля группировки
                     aggregateOption = aggregateMenuController.selectAggregation();
                     break;
                 case CALCULATE_ANALYTICS:

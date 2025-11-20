@@ -1,23 +1,17 @@
 package com.skillbox.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.skillbox.controller.dto.TransactionFilterDto;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Класс, хранящий результаты расчета аналитики транзакций
  */
-// TODO: реализуйте класс для хранения аналитики
 @Setter
 @Getter
 public class Analytic {
@@ -57,8 +51,10 @@ public class Analytic {
         }
         return builder.toString();
     }
+
     public static String buildDescriptionFilter(TransactionFilterDto filterDto) {
         StringBuilder builder = new StringBuilder();
+
         if (filterDto.getStartDate() != null) {
             builder.append(", начальная дата: ").append(filterDto.getStartDate());
         }

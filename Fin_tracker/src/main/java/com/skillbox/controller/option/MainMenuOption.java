@@ -1,6 +1,5 @@
 package com.skillbox.controller.option;
 
-
 public enum MainMenuOption implements MenuOption {
     EXIT("выход из приложения"),
     SEARCH_CRITERIA("задать критерии поиска транзакций"),

@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class TransactionForeignCurrency extends Transaction implements CurrencyConvertible{
+public class TransactionForeignCurrency extends Transaction implements CurrencyConvertible {
 
-    private  BigDecimal course;
+    private BigDecimal course;
 
     public TransactionForeignCurrency(int accountId,
                                       int transactionId,

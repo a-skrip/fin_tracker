@@ -2,10 +2,8 @@ package com.skillbox.controller;
 
 import com.skillbox.controller.option.MenuOption;
 import com.skillbox.controller.option.OptionUtils;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Scanner;
-import java.util.Set;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -41,9 +39,13 @@ public abstract class AbstractMenuController<E extends Enum<E> & MenuOption> {
             System.out.println(description);
             System.out.println(menu);
             System.out.print("Введите нужную опцию и нажмите Enter: ");
-            option = scanner.nextInt();
-            if (numOptions.contains(option)) {
-                break;
+            try {
+                option = scanner.nextInt();
+                if (numOptions.contains(option)) {
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.err.println("Не корректный ввод: " + e.getMessage());
             }
             System.err.println("Выбрана неверная опция!\n"
                     + "Попробуйте заново.\n");

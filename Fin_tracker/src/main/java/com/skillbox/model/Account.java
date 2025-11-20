@@ -11,11 +11,9 @@ import java.util.List;
 /**
  * Класс представляющий собой счет в банке
  */
-// TODO: Исправьте этот класс, он не должен быть абстрактным
 @Setter
 @ToString
 public class Account implements AccountInfo, BalanceOperations, AccountStatement {
-
 
     private int accountId;
     private int userId;
@@ -39,13 +37,11 @@ public class Account implements AccountInfo, BalanceOperations, AccountStatement
         return accountType;
     }
 
-    //TODO не реализован!!!
     @Override
     public List<Transaction> getTransactions() {
         return this.transactions;
     }
 
-    //TODO не реализован!!!
     @Override
     public BigDecimal getBalance() {
         BigDecimal balance = BigDecimal.ZERO;
@@ -55,7 +51,6 @@ public class Account implements AccountInfo, BalanceOperations, AccountStatement
         return balance;
     }
 
-    //TODO не реализован!!!
     @Override
     public void addTransaction(Transaction transaction) {
         if (this.accountId == transaction.getAccountId()) {

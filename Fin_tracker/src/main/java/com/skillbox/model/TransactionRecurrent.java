@@ -34,8 +34,6 @@ public class TransactionRecurrent extends Transaction implements Recurring {
         this.repeat = repeat;
     }
 
-
-    //TODO Реализовать методы
     @Override
     public LocalDateTime getNextOccurrence(LocalDateTime dateTime) {
         LocalDateTime result = null;

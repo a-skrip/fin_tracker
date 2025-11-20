@@ -1,11 +1,9 @@
 package com.skillbox.controller.option;
 
-
 import lombok.Getter;
 
 @Getter
 public enum AggregateOption implements MenuOption {
-    // TODO: исправьте реализацию перечисления для выбора полей группировки по образцу класса SearchOption
     SUM("Подсчет суммы транзакций"),
     AVERAGE("Подсчет среднего значения транзакций"),
     COUNT("Подсчет количества транзакций");
@@ -13,8 +11,9 @@ public enum AggregateOption implements MenuOption {
     private final String name;
 
     AggregateOption(String name) {
-    this.name = name;
+        this.name = name;
     }
+
     @Override
     public int getOption() {
         return ordinal();

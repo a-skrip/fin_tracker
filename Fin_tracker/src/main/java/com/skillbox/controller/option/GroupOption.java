@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum GroupOption implements MenuOption {
-    // TODO: исправьте реализацию перечисления для выбора полей группировки по образцу класса SearchOption
     EXIT("Вернуться назад - без группировки"),
     GROUP_BY_MOUNT("Группировка по месяцам"),
     GROUP_BY_YEARS("Группировка по годам"),

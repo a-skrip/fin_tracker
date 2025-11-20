@@ -17,8 +17,8 @@ public final class OptionUtils {
      * Возвращает элемент перечисления по значению поля option.
      *
      * @param enumClass класс перечисления.
-     * @param option значение option
-     * @param <E> тип перечисления, реализующего OptionEnum.
+     * @param option    значение option
+     * @param <E>       тип перечисления, реализующего OptionEnum.
      * @return элемент перечисления, соответствующий значению option, или выбрасывает исключение, если элемент не
      * найден.
      */
