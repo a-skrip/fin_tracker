@@ -3,7 +3,6 @@ package com.skillbox.data.repository;
 import com.skillbox.exception.ParseLineFormatException;
 import com.skillbox.model.*;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.io.IOException;
@@ -15,12 +14,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@RequiredArgsConstructor
 
+@Getter
+@Setter
 public class TransactionRepositoryImpl implements TransactionRepository {
+
     private final List<Transaction> transactions = new ArrayList<>();
     private final String fileName;
 
+    public TransactionRepositoryImpl(String filename) {
+        this.fileName = filename;
+    }
 
     @Override
     public List<Transaction> readAll() {
@@ -45,6 +49,10 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             System.out.println("Файл не найден " + e.getMessage());
         }
         return transactions;
+    }
+
+    public List<Transaction> getAllTransaction() {
+        return this.transactions;
     }
 
     private static TransactionRegular createTransactionRegular(String[] values) {
@@ -118,9 +126,6 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         );
     }
 
-    public List<Transaction> getAllTransaction() {
-        return this.transactions;
-    }
 
     private static String[] splitLine(String line) {
         return line.split(",");

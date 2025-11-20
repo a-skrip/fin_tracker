@@ -6,16 +6,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.time.Duration;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 public class TransactionRecurrent extends Transaction implements Recurring {
 
     private RecurrencePattern pattern;
@@ -31,13 +29,11 @@ public class TransactionRecurrent extends Transaction implements Recurring {
                                 RecurrencePattern pattern,
                                 int repeat
     ) {
-        super(accountId, transactionId, date, category, amount, type);
+        super(accountId, transactionId, date, category, amount.setScale(2, RoundingMode.HALF_UP), type);
         this.pattern = pattern;
         this.repeat = repeat;
     }
 
-
-    //TODO Реализовать методы
     @Override
     public LocalDateTime getNextOccurrence(LocalDateTime dateTime) {
         LocalDateTime result = null;
@@ -89,15 +85,15 @@ public class TransactionRecurrent extends Transaction implements Recurring {
 
     @Override
     public boolean isExecutedBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        boolean isExecute = false;
         createDatesList();
         for (LocalDateTime dateTime : datesTransaction) {
-            if (dateTime.isAfter(startDate) && dateTime.isBefore(endDate)) {
-                isExecute = true;
-                break;
+            boolean isAfter = startDate == null || dateTime.isAfter(startDate);
+            boolean isBefore = endDate == null || dateTime.isBefore(endDate);
+            if (isAfter && isBefore) {
+                return true;
             }
         }
-        return isExecute;
+        return false;
     }
 
     private void createDatesList() {

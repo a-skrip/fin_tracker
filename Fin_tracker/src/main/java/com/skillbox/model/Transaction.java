@@ -1,6 +1,7 @@
 package com.skillbox.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,10 +9,9 @@ import java.time.LocalDateTime;
 /**
  * Абстрактный класс, представляющий собой транзакцию
  */
-// TODO: Реализуйте абстрактный класс
 @Getter
 @Setter
-@ToString
+
 public abstract class Transaction {
 
     private int accountId;
@@ -22,11 +22,11 @@ public abstract class Transaction {
     private TransactionType type;
 
     public Transaction(int accountId,
-                          int transactionId,
-                          LocalDateTime date,
-                          String category,
-                          BigDecimal amount,
-                          TransactionType type) {
+                       int transactionId,
+                       LocalDateTime date,
+                       String category,
+                       BigDecimal amount,
+                       TransactionType type) {
         this.accountId = accountId;
         this.transactionId = transactionId;
         this.date = date;
@@ -35,4 +35,9 @@ public abstract class Transaction {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return " accountId= " + accountId + " transactionId= " + transactionId + " date " + date + " category " + category + " amount " + amount + " type " + type;
+
+    }
 }

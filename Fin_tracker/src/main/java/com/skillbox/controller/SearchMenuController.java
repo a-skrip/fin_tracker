@@ -2,15 +2,11 @@ package com.skillbox.controller;
 
 import com.skillbox.controller.dto.TransactionFilterDto;
 import com.skillbox.controller.option.SearchOption;
-import com.skillbox.model.Transaction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.InputMismatchException;
-import java.util.function.Predicate;
+import java.time.format.DateTimeParseException;
 
 /**
  * Консольный контроллер для управления навигацией по функционалу поиска транзакций.
@@ -50,16 +46,13 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
     }
 
     private TransactionFilterDto inputComment(TransactionFilterDto filter) {
-        // TODO: добавить ввод комментария
-        System.out.println("Ввод коммента");
+        System.out.println("Введите комментарий для поиска");
         String line = scanner.next();
         filter.setCommentToken(line);
-//        filter.buildPredicate();
         return filter;
     }
 
     private TransactionFilterDto inputAmount(TransactionFilterDto filter) {
-        // TODO: добавить ввод и валидацию минимальной и максимальной суммы транзакции
         System.out.println("Введите минимальную сумму:");
         String minAmount = scanner.next();
 
@@ -67,7 +60,11 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
             System.out.println("Минимальное значение не установлено");
             filter.setMinAmount(null);
         } else {
-            filter.setMinAmount(BigDecimal.valueOf(Double.parseDouble(minAmount)));
+            try {
+                filter.setMinAmount(BigDecimal.valueOf(Double.parseDouble(minAmount)));
+            } catch (NumberFormatException e) {
+                System.err.println("Неправильный ввод - " + e.getMessage() + " , минимальная сумма не установлена! ");
+            }
         }
 
         System.out.println("Введите максимальную сумму:");
@@ -76,22 +73,30 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
             System.out.println("Максимальное значение не установлено");
             filter.setMaxAmount(null);
         } else {
-            filter.setMaxAmount(BigDecimal.valueOf(Integer.parseInt(maxAmount)));
+            try {
+                filter.setMaxAmount(BigDecimal.valueOf(Double.parseDouble(maxAmount)));
+            } catch (NumberFormatException e) {
+                System.err.println("Неправильный ввод - " + e.getMessage() + " максимальная сумма не установлена! ");
+            }
         }
         return filter;
     }
 
     private TransactionFilterDto inputDates(TransactionFilterDto filter) {
-        // TODO: добавить ввод и валидацию дат
-        System.out.println("Введите дату начала: ");
+        System.out.println("Введите дату начала (yyyy-MM-dd): ");
         String startDate = scanner.next();
-        DateTimeFormatter ruFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         if (startDate.isEmpty()) {
             filter.setStartDate(null);
         } else {
-            LocalDate parseStartDate = LocalDate.parse(startDate, ruFormat);
-            filter.setStartDate(parseStartDate);
+            try {
+                LocalDate parseStartDate = LocalDate.parse(startDate, pattern);
+                filter.setStartDate(parseStartDate);
+            } catch (DateTimeParseException e) {
+                System.err.println("Неверно введена дата! Дата начала не установлена");
+                filter.setStartDate(null);
+            }
         }
 
         System.out.println("Введите дату окончания: ");
@@ -99,15 +104,19 @@ public class SearchMenuController extends AbstractMenuController<SearchOption> {
         if (endDate.isEmpty()) {
             filter.setEndDate(null);
         } else {
-            LocalDate parseEndDate = LocalDate.parse(endDate, ruFormat);
-            filter.setEndDate(parseEndDate.plusDays(1));
+            try {
+                LocalDate parseEndDate = LocalDate.parse(endDate, pattern);
+                filter.setEndDate(parseEndDate.plusDays(1));
+            } catch (DateTimeParseException e) {
+                System.err.println("Неверно введена дата! Дата окончания не установлена");
+                filter.setEndDate(null);
+            }
         }
         return filter;
     }
 
     private TransactionFilterDto inputCategory(TransactionFilterDto filter) {
-        // TODO: добавить ввод категории
-        System.out.println("Ввод категории");
+        System.out.println("Введите категорию");
         String line = scanner.next();
         filter.setCategoryToken(line);
         return filter;

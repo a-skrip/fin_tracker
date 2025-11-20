@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class TransactionCommentable extends Transaction implements Commentable{
                                   String category,
                                   BigDecimal amount,
                                   TransactionType type) {
-        super(accountId, transactionId, date, category, amount, type);
+        super(accountId, transactionId, date, category, amount.setScale(2, RoundingMode.HALF_UP), type);
     }
 
     @Override

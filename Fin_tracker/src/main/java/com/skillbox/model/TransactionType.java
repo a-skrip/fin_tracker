@@ -13,9 +13,11 @@ public enum TransactionType {
     COMMENTABLE("Commentable");
 
     private final String type;
+
     TransactionType(String type) {
         this.type = type;
     }
+
     private static final Map<String, TransactionType> MAP = Arrays.stream(TransactionType.values())
             .collect(Collectors.toMap(TransactionType::getType, Function.identity()));
 
